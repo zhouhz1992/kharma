@@ -54,8 +54,10 @@ EXTRA_FLAGS="-DKokkos_ARCH_${HOST_ARCH:-NATIVE}=ON $EXTRA_FLAGS"
 # Kokkos does *not* support compiling for multiple devices!
 # But if they ever do, you can separate a list of DEVICE_ARCH
 # with commas.
-if [[ -v DEVICE_ARCH ]]; then
-  readarray -t arch_array < <(awk -F',' '{ for( i=1; i<=NF; i++ ) print $i }' <<<"$DEVICE_ARCH")
+if [[ -n DEVICE_ARCH ]]; then
+# macos does not have readarray
+#  readarray -t arch_array < <(awk -F',' '{ for( i=1; i<=NF; i++ ) print $i }' <<<"$DEVICE_ARCH")
+  IFS=$'\n' read -d '' -r -a arch_array <<< "$(awk -F',' '{ for( i=1; i<=NF; i++ ) print $i }' <<<"$DEVICE_ARCH")"
   for arch in "${arch_array[@]}"; do
     EXTRA_FLAGS="-DKokkos_ARCH_${arch}=ON $EXTRA_FLAGS"
   done
@@ -201,7 +203,7 @@ fi
 
 # Allow for a custom linker program, but use CXX by
 # default as system linker may be older/incompatible
-if [[ -v LINKER ]]; then
+if [[ -n LINKER ]]; then
   EXTRA_FLAGS="$EXTRA_FLAGS -DCMAKE_LINKER=$LINKER"
 fi
 if [[ "$ARGS" == *"special_link_line"* ]]; then
@@ -264,7 +266,7 @@ if [[ "$ARGS" == *"hdf5"* && "$ARGS" == *"clean"* && "$ARGS" != *"dryrun"* ]]; t
 
   echo "Building HDF5 (probably 30s-2min)"
   # Compiling C takes less memory
-  if [[ -v $NPROC ]]; then
+  if [[ -n $NPROC ]]; then
     make -j$(( $NPROC * 2 )) >> build-hdf5.log 2>&1
   else
     make -j >> build-hdf5.log 2>&1
