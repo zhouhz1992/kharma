@@ -4,6 +4,10 @@
 # multiple codes in this directory?
 
 cmake_minimum_required(VERSION 3.10)
+
+set(CMAKE_C_COMPILER /usr/local/bin/gcc-12)
+set(CMAKE_CXX_COMPILER /usr/local/bin/g++-12)
+
 project(kharma LANGUAGES C CXX)
 
 # We follow Parthenon in requiring C++17 going forward
@@ -61,6 +65,10 @@ include_directories(external/parthenon/src)
 include_directories(external/variant/include)
 # Our hacked-up version of the Kokkos kernels
 include_directories(external/kokkos-kernels)
+
+# fftw library
+include_directories(/usr/local/Cellar/fftw/3.3.10_1/include)
+link_directories(/usr/local/Cellar/fftw/3.3.10_1/lib)
 
 # Finally, build KHARMA
 add_subdirectory(kharma)
