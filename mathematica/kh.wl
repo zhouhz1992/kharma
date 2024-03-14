@@ -7,7 +7,8 @@
 *)
 
 
-BeginPackage["kh`"
+BeginPackage["kh`",
+  "khPlot`"
 ]
 
 
@@ -39,8 +40,7 @@ Begin["`Private`"]
 
 khDirectory=$InputFileName//DirectoryName;
 khInitialize[]:=Module[{},
-  Print["Initialized kh` package."]
-  (*pcReload[];pcPlotStyle[];*)
+  khPlotStyle[]
 ]
 khParallelize[n_|PatternSequence[]]:=With[{dir=khDirectory},
   CloseKernels[];
