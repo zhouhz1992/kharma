@@ -5,8 +5,8 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_C_COMPILER /usr/local/bin/gcc-12)
-set(CMAKE_CXX_COMPILER /usr/local/bin/g++-12)
+set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-13)
+set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-13)
 
 project(kharma LANGUAGES C CXX)
 

@@ -6,7 +6,7 @@ if [[ $(hostname -f) == "haruhi.local" ]]; then
   CXX_NATIVE=g++
 
   NPROC=4
-  HOST_ARCH="ICL"
+#  HOST_ARCH="ICL"
 
   MPI_EXE="mpirun"
 fi
