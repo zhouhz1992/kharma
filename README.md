@@ -1,3 +1,8 @@
+This is a personalized version of the KHARMA code. In particular I have
+(i) modified the configuration files for building on Apple's M3 chip,
+(ii) added a few utility tools in `utils/`, and
+(iii) added a Mathematica package for reading and plotting data in `mathematica/`.
+
 # KHARMA
 KHARMA is an implementation of the HARM scheme for gerneral relativistic magnetohydrodynamics (GRMHD) in C++.  It is based on the Parthenon AMR infrastructure, using Kokkos for parallelism and GPU support.  It is composed of modular "packages," which in theory make it easy to add or swap components representing different physical processes.
 
