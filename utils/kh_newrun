@@ -1,0 +1,14 @@
+#!/bin/bash
+
+old=$(realpath "$1")
+new="$2"
+
+if [[ ! -d "$new" ]]; then
+  mkdir "$new" && cd "$new"
+  ln -s "$KHARMA_PATH"/kharma.host kharma
+  ln -s "$KHARMA_PATH"/pars ./pars
+  cp "$old"/*.par .
+  echo $(pwd)
+else
+  echo "${new} already exists. Please check."
+fi
