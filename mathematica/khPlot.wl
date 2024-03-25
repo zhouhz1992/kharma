@@ -74,11 +74,16 @@ khColors[name_String]:=Switch[name,
   "Blue",RGBColor[{28,77,124}/255],
   "Green",RGBColor[{1,113,0}/255],
   "Magenta",RGBColor[{151,14,83}/255],
-  "RainbowR",ColorData[{"Rainbow","Reversed"}],
+  "Rainbow",Blend[{khHexColor["#032D75"],khHexColor["#01B1FA"],khHexColor["#F4BD18"],khHexColor["#ED1B24"]},#]&,
+  "RainbowR",Blend[Reverse@{khHexColor["#032D75"],khHexColor["#01B1FA"],khHexColor["#F4BD18"],khHexColor["#ED1B24"]},#]&,
+  (*"RainbowR",ColorData[{"Rainbow","Reversed"}],*)
   "BlueBlackRed",Blend[{khColors["Blue"],khHexColor["#006C65"],Black,khHexColor["#E2792E"],khColors["Red"]},#]&,
+  "BlueWhiteRed",Blend[{pcColors["Blue"],khHexColor["#6C96CC"],khHexColor["#EDAE92"],pcColors["Red"]},#]&,
   _,ColorData[name]
 ]
 khColors[name_,{min_,max_}]:=khColors[name][If[Abs[min]>=max,-0.5/min*(#-min),0.5/max*(#-max)+1]]&
+
+khHexColor[hex_]:=RGBColor@@(IntegerDigits[ToExpression@StringReplace[hex,"#"->"16^^"],256,3]/255.)
 
 
 (* ::Section:: *)
