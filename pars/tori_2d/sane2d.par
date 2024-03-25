@@ -82,7 +82,7 @@ single_precision_output = true
 # Fields beginning with a specifier here will be included (e.g., all prims.XXX)
 # Fields specified but not present are silently skipped
 # If you need a line break, use '&' at line end
-variables = prims, jcon, pflag, fflag
+variables = prims, pflag, fflag  #  ,jcon
 
 <parthenon/output1>
 file_type = rst
