@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dir=data_trash_$(date +%F-%T)
+
+mkdir $dir
+mv *.phdf *.xdmf *.rhdf *.hst $dir
