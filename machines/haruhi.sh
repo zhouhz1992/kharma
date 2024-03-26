@@ -1,4 +1,4 @@
-# Macbook with intel CPU and no GPU
+# Macbook with M3 chip
 if [[ $(hostname -f) == "haruhi.local" ]]; then
   echo "We are on haruhi"
   
@@ -8,9 +8,4 @@ if [[ $(hostname -f) == "haruhi.local" ]]; then
   NPROC=4
 
   MPI_EXE="mpirun"
-fi
-
-if [[ $(hostname -f) == "mgmt" ]]; then
-  echo "We are on Astro"
-
 fi
