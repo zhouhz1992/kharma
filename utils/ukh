@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# -lt 3 ] || [ $# -gt 4 ]; then
+  echo "Usage: $0 <prefix> <start> <end> [step]"
+  exit 1
+fi
+
+prefix=$1
+start=$2
+end=$3
+step=${4:-1}
+
+# Create an array to store the filenames
+files=(*.par)
+for ((i=start; i<=end; i+=step)); do
+  filename=$(printf "%s%05d.phdf" "$prefix" "$i")
+  files+=("$filename")
+done
+
+# Create the tar archive using the generated filenames
+tar -cvf data_temp.tar "${files[@]}"
