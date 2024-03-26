@@ -14,7 +14,8 @@ BeginPackage["khRead`"]
 (*Usage messages*)
 
 
-khReadPar::usage="khReadPar[sim] read the *.par file."
+readPar::usage="readPar[sim] reads the *.par file."
+readVAR::usage="readVAR[sim,file] reads data files."
 
 
 Begin["`Private`"]
@@ -28,7 +29,7 @@ Begin["`Private`"]
 (*Read *.par file*)
 
 
-khReadPar[sim_]:=Module[{par,groupPos,groups,items,toRule},
+readPar[sim_]:=Module[{par,groupPos,groups,items,toRule},
   par=With[{f=FileNames["*.par",sim]},
     If[Length[f]>1,
       Return["Error: multiple *.par files found."],
@@ -57,6 +58,35 @@ khReadPar[sim_]:=Module[{par,groupPos,groups,items,toRule},
 ]
 
 
+(* ::Section:: *)
+(*Read data*)
+
+
+readVAR[sim_,file_]:=Module[{tmp=Import[file,"Data"],
+  x,y,z,nB,nx,ny,nz,zeroArr,rho,uvec,u,Bvec},
+  
+  {x,y,z}=tmp["/VolumeLocations/"<>#]&/@{"x","y","z"};
+  {{nB,nx},{nB,ny},{nB,nz}}=Dimensions/@{x,y,z};
+  
+  zeroArr[i_Integer]:=ConstantArray[0,{nB,i,ny,nx}]/;nz==1;
+  zeroArr[i_Integer]:=ConstantArray[0,{nB,i,nz,ny,nx}];
+  If[MemberQ[Keys[tmp],"/prims.rho"],rho=tmp["/prims.rho"],rho=zeroArr[1]];
+  If[MemberQ[Keys[tmp],"/prims.uvec"],uvec=tmp["/prims.uvec"],uvec=zeroArr[3]];
+  If[MemberQ[Keys[tmp],"/prims.u"],u=tmp["/prims.u"],u=zeroArr[1]];
+  If[MemberQ[Keys[tmp],"/prims.B"],Bvec=tmp["/prims.B"],Bvec=zeroArr[3]];
+  
+  (* Transform data structure *)
+  {rho,u}=#[[;;,1]]&/@{rho,u};
+  {uvec,Bvec}=Transpose[#,1<->2]&/@{uvec,Bvec};
+  
+  Association[
+    "Info"->AssociationThread[{"nBlock","nx","ny","nz"}->{nB,nx,ny,nz}],
+    "Grid"->AssociationThread[{"x","y","z"}->{x,y,z}],
+    "Field"->AssociationThread[{"rho","uvec","u","Bvec"}->{rho,uvec,u,Bvec}]
+  ]
+]
+
+
 (* ::Chapter:: *)
 (*End*)
 
@@ -65,7 +95,7 @@ End[]
 
 
 Protect[
-  khReadPar
+  readPar,readVAR
 ]
 
 
