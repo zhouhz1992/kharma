@@ -15,6 +15,7 @@ BeginPackage["khRead`"]
 
 
 readPar::usage="readPar[sim] reads the *.par file."
+readTS::usage="readTS[sim] reads the *.hst file."
 readVAR::usage="readVAR[sim,file] reads data files."
 
 
@@ -55,6 +56,20 @@ readPar[sim_]:=Module[{par,groupPos,groups,items,toRule},
   ];
   
   AssociationThread[groups->(Association/@Map[toRule,items,{2}])]
+]
+
+
+(* ::Section:: *)
+(*Read hst file*)
+
+
+readTS[sim_]:=Module[{jobID,tmp,head,data},
+  jobID=readPar[sim]["parthenon/job","problem_id"];
+  tmp=Import[sim<>"/"<>jobID<>".hst","Table"];
+  head=(StringSplit[#,"="]&/@tmp[[2]])[[2;;,2]];
+  data=Cases[tmp,x_/;x[[1]]!="#"];
+  Print["Read "<>jobID<>".hst: ",head];
+  AssociationThread[head->Transpose[data]]
 ]
 
 
